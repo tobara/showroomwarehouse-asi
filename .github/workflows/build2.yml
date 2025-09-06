@@ -11,7 +11,7 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
       - name: Unzip repo
         run: |
-          Expand-Archive ShowroomWarehouse_ASI_repo_upload.zip -DestinationPath .
+          Expand-Archive ShowroomWarehouse_ASI_repo_upload_fixed_narrow.zip.zip -DestinationPath .
       - name: Build Release x64
         run: |
           msbuild repo/ShowroomWarehouse_ASI_Repo/ShowroomWarehouse_ASI/ShowroomWarehouse_ASI.sln /p:Configuration=Release /p:Platform=x64
