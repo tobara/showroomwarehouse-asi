@@ -1,0 +1,28 @@
+name: Build ShowroomWarehouse ASI New
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
+      - name: Unzip repo
+        run: |
+          Expand-Archive ShowroomWarehouse_ASI_repo_upload.zip -DestinationPath .
+      - name: Build Release x64
+        run: |
+          msbuild repo/ShowroomWarehouse_ASI_Repo/ShowroomWarehouse_ASI/ShowroomWarehouse_ASI.sln /p:Configuration=Release /p:Platform=x64
+      - name: Package artifact
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path artifact | Out-Null
+          Copy-Item "repo/ShowroomWarehouse_ASI_Repo/ShowroomWarehouse_ASI/ShowroomWarehouse_ASI/bin/Release/ShowroomWarehouse_ASI.asi" artifact/
+          Copy-Item "repo/ShowroomWarehouse_ASI_Repo/OpenIV/assembly.xml" artifact/
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShowroomWarehouse_ASI_artifact
+          path: artifact/
