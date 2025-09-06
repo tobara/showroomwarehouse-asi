@@ -19,18 +19,17 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Build Release x64
-        run: msbuild ShowroomWarehouse_ASI_Repo/ShowroomWarehouse_ASI/ShowroomWarehouse_ASI.sln /t:Build /p:Configuration=Release /p:Platform=x64
+        run: msbuild repo/ShowroomWarehouse_ASI_Repo/ShowroomWarehouse_ASI/ShowroomWarehouse_ASI.sln /t:Build /p:Configuration=Release /p:Platform=x64
 
       - name: Package artifact
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Path artifact -Force | Out-Null
-          Copy-Item "ShowroomWarehouse_ASI_Repo/ShowroomWarehouse_ASI/x64/Release/ShowroomWarehouse.asi" artifact/
-          Copy-Item "ShowroomWarehouse_ASI_Repo/OpenIV/assembly.xml" artifact/
-          Compress-Archive artifact/* ShowroomWarehouse_ASI_artifact.zip
+          Copy-Item "repo/ShowroomWarehouse_ASI_Repo/ShowroomWarehouse_ASI/x64/Release/ShowroomWarehouse.asi" artifact/
+          Copy-Item "repo/ShowroomWarehouse_ASI_Repo/OpenIV/assembly.xml" artifact/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ShowroomWarehouse_ASI_artifact
-          path: ShowroomWarehouse_ASI_artifact.zip
+          path: artifact
